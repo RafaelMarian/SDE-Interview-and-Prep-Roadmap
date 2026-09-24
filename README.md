@@ -1,8 +1,8 @@
-# <span style="color:darkslategray;">SDE Interview and Prep Roadmap</span>
+# <span style="color:darkslategray;">SDE Interview and Prep Roadmap (C++)</span>
 
 ## <span style="color:darkolivegreen;">Overview</span>
 
-Welcome to the SDE Interview Preparation Roadmap! This repository is not just about my personal journey; it's a collaborative space for collective learning. As I prepare for Software Development Engineer (SDE) interviews, I've created a comprehensive checklist to guide my preparation. By sharing this roadmap, I aim to foster a community of learners where we can all grow together. It covers various domains including **Data Structures, Algorithms, System Design, Operating Systems, Networking, Databases, Programming Languages and Concepts, System Architecture, Problem-solving and Coding, as well as Behavioral and Soft Skills**.
+Welcome to the SDE Interview Preparation Roadmap! This repository is a collaborative checklist for Software Development Engineer (SDE) interview prep, with **code examples and walkthroughs in C++**. It covers **Data Structures, Algorithms, System Design, Operating Systems, Networking, Databases, Programming Languages and Concepts, System Architecture, Problem-solving and Coding, as well as Behavioral and Soft Skills**.
 
 ## <span style="color:darkolivegreen;">Printable PDF Version of Checklist - [Click Here](/SDE-Interview-and-Prep-Roadmap.pdf)</span>
 
@@ -371,8 +371,19 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
 </details>
 
 <details>
-<summary>7. <span style="color:green;">Programming Languages and Concepts</span></summary>
+<summary>7. <span style="color:green;">Programming Languages and Concepts (C++ focus)</span></summary>
 
+   - [ ] **C++ language essentials**
+     - [ ] Types, references, pointers, and references vs pointers
+     - [ ] RAII and deterministic destruction
+     - [ ] `std::vector`, `std::string`, `std::array`, `std::deque`
+     - [ ] Associative containers: `std::map`, `std::unordered_map`, `std::set`
+     - [ ] Iterators and range-based for
+     - [ ] Lambdas and `<algorithm>` / `<numeric>`
+     - [ ] Move semantics and copy vs move
+     - [ ] Smart pointers (`unique_ptr`, `shared_ptr`)
+     - [ ] Templates and basic generic programming
+     - [ ] Const-correctness and `constexpr`
    - [ ] **Programming paradigms**
      - [ ] Imperative programming
      - [ ] Declarative programming
