@@ -30,7 +30,8 @@ Reverse the flow: from ocean borders, climb to cells with height ≥ current. Ce
 class Solution {
     int m, n;
     vector<vector<int>>* H;
-    vector<vector<int>> dr{1, -1, 0, 0}, dc{0, 0, 1, -1};
+    const int dr[4] = {1, -1, 0, 0};
+    const int dc[4] = {0, 0, 1, -1};
 
     void dfs(int r, int c, vector<vector<bool>>& reach) {
         reach[r][c] = true;
