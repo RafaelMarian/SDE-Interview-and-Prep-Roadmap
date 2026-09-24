@@ -169,6 +169,7 @@ Lista oficială LeetCode **Top Interview 150**. Soluțiile sunt în [`../solutio
 | 39 | Combination Sum *(Blind 75)* | [LC0039](../solutions/LC0039-combination-sum.md) |
 | 22 | Generate Parentheses | [LC0022](../solutions/LC0022-generate-parentheses.md) |
 | 79 | Word Search *(Blind 75)* | [LC0079](../solutions/LC0079-word-search.md) |
+| 52 | N-Queens II | [LC0052](../solutions/LC0052-n-queens-ii.md) |
 | 108 | Convert Sorted Array to Binary Search Tree | [LC0108](../solutions/LC0108-convert-sorted-array-to-binary-search-tree.md) |
 | 148 | Sort List | [LC0148](../solutions/LC0148-sort-list.md) |
 | 427 | Construct Quad Tree | [LC0427](../solutions/LC0427-construct-quad-tree.md) |
@@ -240,4 +241,3 @@ Lista oficială LeetCode **Top Interview 150**. Soluțiile sunt în [`../solutio
 | 123 | Best Time to Buy and Sell Stock III | [LC0123](../solutions/LC0123-best-time-to-buy-and-sell-stock-iii.md) |
 | 188 | Best Time to Buy and Sell Stock IV | [LC0188](../solutions/LC0188-best-time-to-buy-and-sell-stock-iv.md) |
 | 221 | Maximal Square | [LC0221](../solutions/LC0221-maximal-square.md) |
-| 1143 | Longest Common Subsequence *(Blind 75)* | [LC1143](../solutions/LC1143-longest-common-subsequence.md) |
