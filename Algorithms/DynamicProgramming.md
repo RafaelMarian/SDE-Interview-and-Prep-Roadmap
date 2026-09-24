@@ -1,70 +1,48 @@
 # Dynamic Programming
 
-Break problems into **overlapping subproblems** with optimal substructure. Store sub-answers to avoid exponential recomputation.
+Break a problem into overlapping subproblems; store answers instead of recomputing.
 
-## Top-down vs bottom-up
+## Two styles
 
-| | Top-down (memo) | Bottom-up (tabulation) |
-|---|-----------------|-------------------------|
-| Style | DFS + `unordered_map` / vector | Nested loops fill table |
-| Order | Natural recursion | Must respect dependency order |
-| Space | Call stack + memo | Often can roll 1–2 rows |
-| Interview | Quick to sketch | Shows you know transitions |
+| Style | How | Tip |
+|-------|-----|-----|
+| Top-down (memo) | Recursion + cache | Easy to write from recurrence |
+| Bottom-up (tabulation) | Iterative table | Often better constants / clearer complexity |
 
-```cpp
-// Top-down sketch
-int dfs(int i, int j, vector<vector<int>>& memo) {
-    if (base) return base_val;
-    if (memo[i][j] != -1) return memo[i][j];
-    return memo[i][j] = combine(dfs(...), dfs(...));
-}
-```
+## Pattern map (FAANG)
 
-## 1D vs 2D patterns
+| Pattern | Example | State idea |
+|---------|---------|------------|
+| 1D linear | Climbing stairs, House Robber | `dp[i]` from `i-1`, `i-2` |
+| 0/1 Knapsack | Subset sum, Target sum | `dp[i][w]` take / skip item |
+| Unbounded knapsack | Coin change | reuse item in inner loop |
+| LCS / Edit distance | Strings | `dp[i][j]` on two prefixes |
+| LIS | Longest increasing | O(n²) DP or O(n log n) tails |
+| Grid paths | Unique paths, min path sum | `dp[r][c]` from top/left |
+| Interval DP | Burst balloons | longer intervals from shorter |
+| State compression | TSP small n | bitmask `dp[mask][i]` |
 
-**1D (`dp[i]`):** state depends on a prefix — climbing stairs, house robber, coin change, LIS (1D per index).
-
-```cpp
-dp[0] = base;
-for (int i = 1; i <= n; i++)
-    dp[i] = best over choices using dp[i - cost];
-```
-
-**2D (`dp[i][j]`):** two sequences or grid — LCS, edit distance, knapsack (items × capacity).
-
-```cpp
-for (int i = 1; i <= m; i++)
-  for (int j = 1; j <= n; j++)
-    if (match) dp[i][j] = dp[i-1][j-1] + 1;
-    else dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
-```
-
-**0/1 knapsack:** iterate `w` **descending** so each item used once.
-
-## Decision table (what to optimize)
-
-| Signal | Typical DP |
-|--------|------------|
-| Count ways | Sum transitions |
-| Min / max cost | min / max |
-| Yes / no feasible | boolean |
-| Build sequence | store parent / backtrack |
+## Decision checklist
+1. What is the **answer for a smaller input**?
+2. What **choices** at this step?
+3. Can I define `dp[...]` so choices transition cleanly?
+4. Base cases? Dimensionality? Can I compress space?
 
 ## Pitfalls
-
-- Wrong loop direction in 0/1 knapsack (ascending → unlimited knapsack).
-- Off-by-one in indices vs string chars (`i-1` for `s[i-1]`).
-- Forgetting base cases (`dp[0]`, empty string row).
+- Off-by-one on indexing / base cases
+- Wrong loop order for knapsack (0/1 needs reverse capacity loop in 1D)
+- Confusing subsequence (non-contiguous) vs subarray
 
 ## Practice
+| # | Problem |
+|---|---------|
+| LC 70 | Climbing Stairs |
+| LC 198 | House Robber |
+| LC 322 | Coin Change |
+| LC 300 | Longest Increasing Subsequence |
+| LC 1143 | Longest Common Subsequence |
+| LC 416 | Partition Equal Subset Sum |
+| LC 62 | Unique Paths |
+| LC 72 | Edit Distance |
 
-| # | Problem | Pattern |
-|---|---------|---------|
-| 70 | Climbing Stairs | 1D fib |
-| 198 | House Robber | 1D max |
-| 322 | Coin Change | unbounded min coins |
-| 416 | Partition Equal Subset Sum | 0/1 knapsack |
-| 1143 | LCS | 2D strings |
-| 72 | Edit Distance | 2D strings |
-| 300 | LIS | 1D O(n²) or patience O(n log n) |
-| 62 | Unique Paths | grid DP |
+See [`DynamicProgramming.cpp`](./DynamicProgramming.cpp).

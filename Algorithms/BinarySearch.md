@@ -1,74 +1,59 @@
 # Binary Search
 
-Search on **sorted** (or **monotonic**) data in `O(log n)` by halving the search space each step.
+Halve the search space each step. Works on **sorted arrays** or on a **monotonic answer space**.
 
-## When to reach for it
-
-- Sorted array / answer space is monotonic (first `x` where predicate holds)
-- "Minimize maximum", "maximize minimum" with feasibility check
-- Rotated sorted array, peak finding, sqrt / integer division
-
-**Not** binary search: unsorted data without a predicate on indices; use hashing or two pointers instead.
-
----
-
-## Templates
-
-### Classic (exact match, closed interval)
+## Classic template
 
 ```cpp
-int lo = 0, hi = n - 1;
-while (lo <= hi) {
-    int mid = lo + (hi - lo) / 2;
-    if (nums[mid] == target) return mid;
-    if (nums[mid] < target) lo = mid + 1;
-    else hi = mid - 1;
+int binarySearch(const vector<int>& a, int target) {
+    int lo = 0, hi = (int)a.size() - 1;
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (a[mid] == target) return mid;
+        if (a[mid] < target) lo = mid + 1;
+        else hi = mid - 1;
+    }
+    return -1;
 }
-return -1;
 ```
 
-### Lower bound (first `i` with `nums[i] >= target`)
-
-Half-open `[lo, hi)` → insert position, first `>=`.
+## Lower bound (first ≥ target)
 
 ```cpp
-int lo = 0, hi = n;
-while (lo < hi) {
-    int mid = lo + (hi - lo) / 2;
-    if (nums[mid] < target) lo = mid + 1;
-    else hi = mid;
+int lowerBound(const vector<int>& a, int target) {
+    int lo = 0, hi = (int)a.size(); // hi is exclusive
+    while (lo < hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (a[mid] < target) lo = mid + 1;
+        else hi = mid;
+    }
+    return lo; // may equal n
 }
-return lo;
 ```
 
-**First / last occurrence:** first = lower bound; last = upper_bound style (`nums[mid] <= target` → `lo = mid + 1`) then `lo - 1`.
+Prefer `std::lower_bound` / `std::upper_bound` when allowed.
 
-### Rotated sorted array
+## Binary search on answer
 
-Identify which half is sorted; check if `target` lies in that half.
+When “can we achieve X?” is monotonic:
+1. Define `feasible(mid)`
+2. Search min/max `mid` where feasible is true
 
----
+Examples: koko eating bananas, capacity to ship packages, split array largest sum.
 
 ## Pitfalls
+- Overflow: use `lo + (hi - lo) / 2`
+- Off-by-one: decide inclusive vs exclusive `hi`
+- Rotated array: identify which half is sorted
 
-| Issue | Fix |
-|--------|-----|
-| Overflow in `mid` | Use `lo + (hi - lo) / 2` |
-| Off-by-one (`<=` vs `<`) | Pick one invariant: closed `[lo,hi]` vs half-open `[lo,hi)` |
-| Duplicates in rotated search | Often need separate "find min pivot" pass |
-| Infinite loop | Ensure `lo`/`hi` always moves |
+## Practice
+| # | Problem |
+|---|---------|
+| LC 704 | Binary Search |
+| LC 35 | Search Insert Position |
+| LC 34 | First and Last Position |
+| LC 33 | Search in Rotated Sorted Array |
+| LC 875 | Koko Eating Bananas |
+| LC 410 | Split Array Largest Sum |
 
----
-
-## Practice (LeetCode)
-
-| # | Problem | Idea |
-|---|---------|------|
-| 704 | Binary Search | Classic |
-| 35 | Search Insert Position | `lower_bound` |
-| 34 | Find First and Last Position | Two bounds |
-| 33 | Search in Rotated Sorted Array | Which half is sorted |
-| 153 | Find Minimum in Rotated Sorted Array | Pivot |
-| 4 | Median of Two Sorted Arrays | BS on partition |
-| 875 | Koko Eating Bananas | BS on answer |
-| 1011 | Capacity To Ship Packages | BS on answer |
+See [`BinarySearch.cpp`](./BinarySearch.cpp).

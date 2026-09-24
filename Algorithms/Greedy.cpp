@@ -1,87 +1,84 @@
 /*
- * Greedy — jump game, activity selection, gas station, fractional knapsack
- * LeetCode: 55, 435/252, 134, classic fractional knapsack
+ * Greedy patterns for FAANG interviews
  */
 
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <climits>
+#include <queue>
 
-// LeetCode 55 — jump game (can reach last index?)
-bool canJump(const std::vector<int>& nums) {
-    int reach = 0;
-    for (int i = 0; i < static_cast<int>(nums.size()); i++) {
-        if (i > reach) return false;
-        reach = std::max(reach, i + nums[i]);
-        if (reach >= static_cast<int>(nums.size()) - 1) return true;
+bool canJump(const std::vector<int>& a) {
+    int far = 0;
+    for (int i = 0; i < static_cast<int>(a.size()); i++) {
+        if (i > far) return false;
+        far = std::max(far, i + a[i]);
     }
     return true;
 }
 
-struct Interval {
-    int start, end;
-};
+int jump(const std::vector<int>& a) {
+    int jumps = 0, curEnd = 0, far = 0;
+    for (int i = 0; i < static_cast<int>(a.size()) - 1; i++) {
+        far = std::max(far, i + a[i]);
+        if (i == curEnd) {
+            jumps++;
+            curEnd = far;
+        }
+    }
+    return jumps;
+}
 
-// Activity selection — max non-overlapping intervals (LeetCode 435 style)
-int maxNonOverlapping(std::vector<Interval> intervals) {
+int eraseOverlapIntervals(std::vector<std::vector<int>> intervals) {
+    if (intervals.empty()) return 0;
     std::sort(intervals.begin(), intervals.end(),
-              [](const Interval& a, const Interval& b) { return a.end < b.end; });
-    int count = 0, lastEnd = INT_MIN;
-    for (const auto& iv : intervals) {
-        if (iv.start >= lastEnd) {
-            count++;
-            lastEnd = iv.end;
+              [](const auto& x, const auto& y) { return x[1] < y[1]; });
+    int keep = 1, end = intervals[0][1];
+    for (int i = 1; i < static_cast<int>(intervals.size()); i++) {
+        if (intervals[i][0] >= end) {
+            keep++;
+            end = intervals[i][1];
         }
     }
-    return count;
+    return static_cast<int>(intervals.size()) - keep;
 }
 
-// LeetCode 134 — gas station circuit
-int canCompleteCircuit(std::vector<int>& gas, std::vector<int>& cost) {
-    int total = 0, tank = 0, start = 0;
-    for (int i = 0; i < static_cast<int>(gas.size()); i++) {
-        int diff = gas[i] - cost[i];
-        total += diff;
-        tank += diff;
-        if (tank < 0) {
-            start = i + 1;
-            tank = 0;
-        }
+// Meeting rooms II — min rooms = max concurrent
+int minMeetingRooms(std::vector<std::vector<int>> intervals) {
+    std::sort(intervals.begin(), intervals.end());
+    std::priority_queue<int, std::vector<int>, std::greater<int>> ends;
+    for (auto& it : intervals) {
+        if (!ends.empty() && ends.top() <= it[0]) ends.pop();
+        ends.push(it[1]);
     }
-    return total >= 0 ? start : -1;
+    return static_cast<int>(ends.size());
 }
 
-struct Item {
-    int weight;
-    double value;
-};
-
-// Fractional knapsack — take fractions by value/weight ratio
-double fractionalKnapsack(int capacity, std::vector<Item> items) {
-    std::sort(items.begin(), items.end(), [](const Item& a, const Item& b) {
-        return (a.value / a.weight) > (b.value / b.weight);
+// Fractional knapsack — max value with capacity W
+double fractionalKnapsack(std::vector<int> wt, std::vector<int> val, int W) {
+    int n = static_cast<int>(wt.size());
+    std::vector<int> idx(n);
+    for (int i = 0; i < n; i++) idx[i] = i;
+    std::sort(idx.begin(), idx.end(), [&](int i, int j) {
+        return (double)val[i] / wt[i] > (double)val[j] / wt[j];
     });
-    double total = 0.0;
-    for (const auto& it : items) {
-        if (capacity <= 0) break;
-        int take = std::min(capacity, it.weight);
-        total += (static_cast<double>(take) / it.weight) * it.value;
-        capacity -= take;
+    double ans = 0;
+    for (int i : idx) {
+        if (W >= wt[i]) {
+            W -= wt[i];
+            ans += val[i];
+        } else {
+            ans += (double)val[i] * W / wt[i];
+            break;
+        }
     }
-    return total;
+    return ans;
 }
 
 int main() {
-    std::cout << "canJump: " << (canJump({2, 3, 1, 1, 4}) ? "true" : "false") << "\n";
-
-    std::vector<Interval> meetings{{1, 3}, {2, 4}, {3, 5}, {0, 6}, {5, 7}, {8, 9}};
-    std::cout << "maxNonOverlapping: " << maxNonOverlapping(meetings) << "\n";
-
-    std::vector<int> gas{1, 2, 3, 4, 5}, cost{3, 4, 5, 1, 2};
-    std::cout << "gas station start: " << canCompleteCircuit(gas, cost) << "\n";
-
-    std::vector<Item> items{{10, 60}, {20, 100}, {30, 120}};
-    std::cout << "fractional knapsack W=50: " << fractionalKnapsack(50, items) << "\n";
+    std::cout << std::boolalpha << canJump({2, 3, 1, 1, 4}) << "\n";  // true
+    std::cout << jump({2, 3, 1, 1, 4}) << "\n";                       // 2
+    std::cout << eraseOverlapIntervals({{1, 2}, {2, 3}, {3, 4}, {1, 3}}) << "\n";  // 1
+    std::cout << minMeetingRooms({{0, 30}, {5, 10}, {15, 20}}) << "\n";  // 2
+    std::cout << fractionalKnapsack({10, 20, 30}, {60, 100, 120}, 50) << "\n";  // 240
     return 0;
 }

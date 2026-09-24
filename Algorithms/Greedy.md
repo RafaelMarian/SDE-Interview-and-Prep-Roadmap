@@ -1,62 +1,48 @@
 # Greedy
 
-At each step, take the **locally best** choice hoping it yields a global optimum. Works only when the problem has **greedy choice property** and **optimal substructure** (not interchangeable with all DP problems).
+Make the locally optimal choice at each step. Works only when that leads to a global optimum (prove via exchange / staying ahead).
 
-## When greedy works
+## When to try greedy
 
-- Problem asks for **maximum / minimum** with matroid-like structure (intervals, deadlines).
-- You can prove **exchange argument**: swapping any non-greedy choice for greedy never hurts.
-- Sorting items by a key (ratio, end time, deadline) then one pass is a common pattern.
+- Interval scheduling / merging
+- Jump game / reachability
+- Assign cookies / candy / tasks with cooldown
+- Huffman / activity selection
+- Minimum platforms / meeting rooms (sort + sweep)
 
-## Exchange argument (intuition)
+If you cannot argue correctness, fall back to DP.
 
-For activity selection sorted by **end time**: suppose an optimal solution picks an interval that ends later than the greedy first pick. Replacing it with the earlier-ending greedy interval frees at least as much room → no fewer intervals can fit. Hence greedy is optimal.
+## Core patterns
 
-## Templates
-
-**Furthest reach (jump game):**
-
+### Jump Game — farthest reach
 ```cpp
-int reach = 0;
-for (int i = 0; i < n; i++) {
-    if (i > reach) return false;
-    reach = max(reach, i + nums[i]);
+bool canJump(vector<int>& a) {
+    int far = 0;
+    for (int i = 0; i < (int)a.size(); i++) {
+        if (i > far) return false;
+        far = max(far, i + a[i]);
+    }
+    return true;
 }
 ```
 
-**Intervals — sort by end, take if start >= lastEnd:**
-
+### Interval: sort by end, take non-overlapping
 ```cpp
-sort by end;
-for (iv : intervals)
-    if (iv.start >= lastEnd) { take; lastEnd = iv.end; }
+sort(intervals.begin(), intervals.end(),
+     [](auto& x, auto& y){ return x[1] < y[1]; });
 ```
 
-**Fractional knapsack — sort by value/weight descending.**
-
-## Greedy vs DP
-
-| | Greedy | DP |
-|---|--------|-----|
-| Proof | Often needs exchange / matroid | Recurrence always valid |
-| Time | Usually O(n log n) from sort | Often O(n²) or O(n·W) |
-| Example | Activity selection | 0/1 knapsack (no fractions) |
-
-## Pitfalls
-
-- Applying greedy to **0/1 knapsack** (need DP).
-- Wrong sort key (start vs end vs ratio).
-- Jump game II needs different greedy (min jumps), not just reachability.
+### Fractional knapsack
+Sort by value/weight density; take whole items then fraction.
 
 ## Practice
+| # | Problem |
+|---|---------|
+| LC 55 | Jump Game |
+| LC 45 | Jump Game II |
+| LC 435 | Non-overlapping Intervals |
+| LC 253 | Meeting Rooms II |
+| LC 134 | Gas Station |
+| LC 455 | Assign Cookies |
 
-| # | Problem | Greedy idea |
-|---|---------|-------------|
-| 55 | Jump Game | max reach |
-| 45 | Jump Game II | BFS / greedy jumps |
-| 435 | Non-overlapping Intervals | sort by end |
-| 253 | Meeting Rooms II | sort + heap (or sweep) |
-| 134 | Gas Station | total sum + reset start |
-| 455 | Assign Cookies | sort both |
-| 621 | Task Scheduler | freq + formula |
-| 860 | Lemonade Change | simulate |
+See [`Greedy.cpp`](./Greedy.cpp).

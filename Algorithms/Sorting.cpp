@@ -1,103 +1,88 @@
 /*
- * Sorting — merge sort, quick sort, heap sort; std::sort note in Sorting.md
+ * Sorting algorithms for FAANG interviews
  */
 
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
-static void merge(std::vector<int>& a, int l, int mid, int r, std::vector<int>& buf) {
-    int i = l, j = mid + 1, k = l;
-    while (i <= mid && j <= r) {
-        if (a[i] <= a[j]) buf[k++] = a[i++];
-        else buf[k++] = a[j++];
+void merge(std::vector<int>& a, int lo, int mid, int hi) {
+    std::vector<int> left(a.begin() + lo, a.begin() + mid + 1);
+    std::vector<int> right(a.begin() + mid + 1, a.begin() + hi + 1);
+    int i = 0, j = 0, k = lo;
+    while (i < static_cast<int>(left.size()) && j < static_cast<int>(right.size())) {
+        if (left[i] <= right[j]) a[k++] = left[i++];
+        else a[k++] = right[j++];
     }
-    while (i <= mid) buf[k++] = a[i++];
-    while (j <= r) buf[k++] = a[j++];
-    for (int t = l; t <= r; t++) a[t] = buf[t];
+    while (i < static_cast<int>(left.size())) a[k++] = left[i++];
+    while (j < static_cast<int>(right.size())) a[k++] = right[j++];
 }
 
-void mergeSort(std::vector<int>& a, int l, int r, std::vector<int>& buf) {
-    if (l >= r) return;
-    int mid = l + (r - l) / 2;
-    mergeSort(a, l, mid, buf);
-    mergeSort(a, mid + 1, r, buf);
-    merge(a, l, mid, r, buf);
+void mergeSort(std::vector<int>& a, int lo, int hi) {
+    if (lo >= hi) return;
+    int mid = lo + (hi - lo) / 2;
+    mergeSort(a, lo, mid);
+    mergeSort(a, mid + 1, hi);
+    merge(a, lo, mid, hi);
 }
 
-void mergeSort(std::vector<int>& a) {
-    if (a.empty()) return;
-    std::vector<int> buf(a.size());
-    mergeSort(a, 0, static_cast<int>(a.size()) - 1, buf);
-}
-
-static int partition(std::vector<int>& a, int l, int r) {
-    int pivot = a[r];
-    int i = l;
-    for (int j = l; j < r; j++) {
-        if (a[j] <= pivot) std::swap(a[i++], a[j]);
+int partition(std::vector<int>& a, int lo, int hi) {
+    int pivot = a[hi];
+    int i = lo;
+    for (int j = lo; j < hi; j++) {
+        if (a[j] < pivot) std::swap(a[i++], a[j]);
     }
-    std::swap(a[i], a[r]);
+    std::swap(a[i], a[hi]);
     return i;
 }
 
-void quickSort(std::vector<int>& a, int l, int r) {
-    if (l >= r) return;
-    int p = partition(a, l, r);
-    quickSort(a, l, p - 1);
-    quickSort(a, p + 1, r);
+void quickSort(std::vector<int>& a, int lo, int hi) {
+    if (lo >= hi) return;
+    int p = partition(a, lo, hi);
+    quickSort(a, lo, p - 1);
+    quickSort(a, p + 1, hi);
 }
 
-void quickSort(std::vector<int>& a) {
-    if (a.empty()) return;
-    quickSort(a, 0, static_cast<int>(a.size()) - 1);
-}
-
-static void siftDown(std::vector<int>& heap, int i, int n) {
-    while (true) {
-        int largest = i;
-        int left = 2 * i + 1, right = 2 * i + 2;
-        if (left < n && heap[left] > heap[largest]) largest = left;
-        if (right < n && heap[right] > heap[largest]) largest = right;
-        if (largest == i) break;
-        std::swap(heap[i], heap[largest]);
-        i = largest;
+void heapify(std::vector<int>& a, int n, int i) {
+    int largest = i;
+    int l = 2 * i + 1, r = 2 * i + 2;
+    if (l < n && a[l] > a[largest]) largest = l;
+    if (r < n && a[r] > a[largest]) largest = r;
+    if (largest != i) {
+        std::swap(a[i], a[largest]);
+        heapify(a, n, largest);
     }
 }
 
 void heapSort(std::vector<int>& a) {
     int n = static_cast<int>(a.size());
-    for (int i = n / 2 - 1; i >= 0; i--) siftDown(a, i, n);
-    for (int end = n - 1; end > 0; end--) {
-        std::swap(a[0], a[end]);
-        siftDown(a, 0, end);
+    for (int i = n / 2 - 1; i >= 0; i--) heapify(a, n, i);
+    for (int i = n - 1; i > 0; i--) {
+        std::swap(a[0], a[i]);
+        heapify(a, i, 0);
     }
 }
 
-static void printVec(const std::vector<int>& v) {
-    for (int x : v) std::cout << x << ' ';
-    std::cout << '\n';
+void print(const std::vector<int>& a) {
+    for (int x : a) std::cout << x << " ";
+    std::cout << "\n";
 }
 
 int main() {
-    std::vector<int> m{5, 2, 8, 1, 9, 3};
-    mergeSort(m);
-    std::cout << "mergeSort: ";
-    printVec(m);
+    std::vector<int> a = {5, 2, 8, 1, 9, 3};
+    mergeSort(a, 0, static_cast<int>(a.size()) - 1);
+    print(a);  // 1 2 3 5 8 9
 
-    std::vector<int> q{5, 2, 8, 1, 9, 3};
-    quickSort(q);
-    std::cout << "quickSort: ";
-    printVec(q);
+    a = {5, 2, 8, 1, 9, 3};
+    quickSort(a, 0, static_cast<int>(a.size()) - 1);
+    print(a);
 
-    std::vector<int> h{5, 2, 8, 1, 9, 3};
-    heapSort(h);
-    std::cout << "heapSort: ";
-    printVec(h);
+    a = {5, 2, 8, 1, 9, 3};
+    heapSort(a);
+    print(a);
 
-    std::vector<int> s{5, 2, 8, 1, 9, 3};
-    std::sort(s.begin(), s.end());
-    std::cout << "std::sort: ";
-    printVec(s);
+    a = {5, 2, 8, 1, 9, 3};
+    std::sort(a.begin(), a.end());
+    print(a);
     return 0;
 }

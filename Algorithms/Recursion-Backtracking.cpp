@@ -1,120 +1,113 @@
 /*
- * Recursion & Backtracking — subsets, permutations, combination sum, N-Queens (n=4)
- * LeetCode: 78, 46, 39, 51
+ * Recursion / backtracking patterns for FAANG interviews
  */
 
 #include <iostream>
 #include <vector>
 #include <string>
-#include <functional>
-#include <cmath>
+#include <algorithm>
 
-// LeetCode 78 — subsets
+void subsetsDfs(int i, const std::vector<int>& nums,
+                std::vector<int>& path,
+                std::vector<std::vector<int>>& ans) {
+    if (i == static_cast<int>(nums.size())) {
+        ans.push_back(path);
+        return;
+    }
+    // skip
+    subsetsDfs(i + 1, nums, path, ans);
+    // take
+    path.push_back(nums[i]);
+    subsetsDfs(i + 1, nums, path, ans);
+    path.pop_back();
+}
+
 std::vector<std::vector<int>> subsets(const std::vector<int>& nums) {
-    std::vector<std::vector<int>> res;
+    std::vector<std::vector<int>> ans;
     std::vector<int> path;
-    int n = static_cast<int>(nums.size());
-    std::function<void(int)> dfs = [&](int i) {
-        if (i == n) {
-            res.push_back(path);
-            return;
-        }
-        path.push_back(nums[i]);
-        dfs(i + 1);
+    subsetsDfs(0, nums, path, ans);
+    return ans;
+}
+
+void permuteDfs(std::vector<int>& nums, int start,
+                std::vector<std::vector<int>>& ans) {
+    if (start == static_cast<int>(nums.size())) {
+        ans.push_back(nums);
+        return;
+    }
+    for (int i = start; i < static_cast<int>(nums.size()); i++) {
+        std::swap(nums[start], nums[i]);
+        permuteDfs(nums, start + 1, ans);
+        std::swap(nums[start], nums[i]);
+    }
+}
+
+std::vector<std::vector<int>> permute(std::vector<int> nums) {
+    std::vector<std::vector<int>> ans;
+    permuteDfs(nums, 0, ans);
+    return ans;
+}
+
+void comboDfs(int start, int remain, const std::vector<int>& cand,
+              std::vector<int>& path,
+              std::vector<std::vector<int>>& ans) {
+    if (remain == 0) {
+        ans.push_back(path);
+        return;
+    }
+    for (int i = start; i < static_cast<int>(cand.size()); i++) {
+        if (cand[i] > remain) break;
+        path.push_back(cand[i]);
+        comboDfs(i, remain - cand[i], cand, path, ans);  // reuse allowed
         path.pop_back();
-        dfs(i + 1);
-    };
-    dfs(0);
-    return res;
+    }
 }
 
-// LeetCode 46 — permutations
-std::vector<std::vector<int>> permute(std::vector<int>& nums) {
-    std::vector<std::vector<int>> res;
+std::vector<std::vector<int>> combinationSum(std::vector<int> candidates, int target) {
+    std::sort(candidates.begin(), candidates.end());
+    std::vector<std::vector<int>> ans;
     std::vector<int> path;
-    std::vector<bool> used(nums.size(), false);
-    std::function<void()> dfs = [&]() {
-        if (path.size() == nums.size()) {
-            res.push_back(path);
-            return;
-        }
-        for (int i = 0; i < static_cast<int>(nums.size()); i++) {
-            if (used[i]) continue;
-            used[i] = true;
-            path.push_back(nums[i]);
-            dfs();
-            path.pop_back();
-            used[i] = false;
-        }
-    };
-    dfs();
-    return res;
+    comboDfs(0, target, candidates, path, ans);
+    return ans;
 }
 
-// LeetCode 39 — combination sum (reuse allowed)
-std::vector<std::vector<int>> combinationSum(std::vector<int>& candidates, int target) {
-    std::vector<std::vector<int>> res;
-    std::vector<int> path;
-    std::function<void(int, int)> dfs = [&](int start, int remain) {
-        if (remain == 0) {
-            res.push_back(path);
-            return;
-        }
-        if (remain < 0) return;
-        for (int i = start; i < static_cast<int>(candidates.size()); i++) {
-            path.push_back(candidates[i]);
-            dfs(i, remain - candidates[i]);
-            path.pop_back();
-        }
-    };
-    dfs(0, target);
-    return res;
+void genParens(int open, int close, int n, std::string& cur,
+               std::vector<std::string>& ans) {
+    if (static_cast<int>(cur.size()) == 2 * n) {
+        ans.push_back(cur);
+        return;
+    }
+    if (open < n) {
+        cur.push_back('(');
+        genParens(open + 1, close, n, cur, ans);
+        cur.pop_back();
+    }
+    if (close < open) {
+        cur.push_back(')');
+        genParens(open, close + 1, n, cur, ans);
+        cur.pop_back();
+    }
 }
 
-// N-Queens — print one solution board for n=4 (LeetCode 51 simplified)
-bool solveNQueensBoard(int n, std::vector<std::string>& board) {
-    board.assign(n, std::string(n, '.'));
-    std::vector<int> col(n, -1);
-
-    auto safe = [&](int row, int c) {
-        for (int r = 0; r < row; r++) {
-            int cc = col[r];
-            if (cc == c) return false;
-            if (row - r == std::abs(c - cc)) return false;
-        }
-        return true;
-    };
-
-    std::function<bool(int)> dfs = [&](int row) -> bool {
-        if (row == n) return true;
-        for (int c = 0; c < n; c++) {
-            if (!safe(row, c)) continue;
-            col[row] = c;
-            board[row][c] = 'Q';
-            if (dfs(row + 1)) return true;
-            board[row][c] = '.';
-        }
-        return false;
-    };
-    return dfs(0);
+std::vector<std::string> generateParenthesis(int n) {
+    std::vector<std::string> ans;
+    std::string cur;
+    genParens(0, 0, n, cur, ans);
+    return ans;
 }
 
 int main() {
-    std::vector<int> nums{1, 2, 3};
-    auto sub = subsets(nums);
-    std::cout << "subsets count: " << sub.size() << " (expect 8)\n";
+    auto s = subsets({1, 2});
+    std::cout << s.size() << "\n";  // 4
 
-    auto perms = permute(nums);
-    std::cout << "permutations count: " << perms.size() << " (expect 6)\n";
+    auto p = permute({1, 2, 3});
+    std::cout << p.size() << "\n";  // 6
 
-    std::vector<int> cand{2, 3, 6, 7};
-    auto cs = combinationSum(cand, 7);
-    std::cout << "combinationSum(7) count: " << cs.size() << "\n";
+    auto c = combinationSum({2, 3, 6, 7}, 7);
+    std::cout << c.size() << "\n";  // 2: [2,2,3] and [7]
 
-    std::vector<std::string> board;
-    if (solveNQueensBoard(4, board)) {
-        std::cout << "N-Queens n=4:\n";
-        for (const auto& row : board) std::cout << row << '\n';
-    }
+    auto g = generateParenthesis(3);
+    for (auto& x : g) std::cout << x << " ";
+    std::cout << "\n";
     return 0;
 }
