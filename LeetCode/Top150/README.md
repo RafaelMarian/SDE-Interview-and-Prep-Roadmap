@@ -19,6 +19,7 @@ Lista oficială LeetCode **Top Interview 150**. Soluțiile sunt în [`../solutio
 | 45 | Jump Game II | [LC0045](../solutions/LC0045-jump-game-ii.md) |
 | 274 | H-Index | [LC0274](../solutions/LC0274-h-index.md) |
 | 380 | Insert Delete GetRandom O(1) | [LC0380](../solutions/LC0380-insert-delete-getrandom-o1.md) |
+| 238 | Product of Array Except Self *(Blind 75)* | [LC0238](../solutions/LC0238-product-of-array-except-self.md) |
 | 134 | Gas Station | [LC0134](../solutions/LC0134-gas-station.md) |
 | 135 | Candy | [LC0135](../solutions/LC0135-candy.md) |
 | 42 | Trapping Rain Water | [LC0042](../solutions/LC0042-trapping-rain-water.md) |
