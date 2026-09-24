@@ -82,11 +82,7 @@ void deleteTree(TreeNode* root) {
 }
 
 int main() {
-    //       4
-    //      / \
-    //     2   6
-    //    / \
-    //   1   3
+    // Tree shape: 4 with left 2 (children 1,3) and right 6
     TreeNode* root = nullptr;
     for (int v : {4, 2, 6, 1, 3}) root = insertBST(root, v);
 
