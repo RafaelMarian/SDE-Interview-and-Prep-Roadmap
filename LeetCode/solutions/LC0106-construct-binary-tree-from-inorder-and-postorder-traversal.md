@@ -29,32 +29,23 @@ Last element of postorder is the root; locate it in inorder to split left/right 
 ```cpp
 class Solution {
     unordered_map<int, int> idx;
-    int build(vector<int>& in, vector<int>& post, int inLo, int inHi, int postLo, int postHi) {
-        if (inLo > inHi) return -1;
-        int rootVal = post[postHi];
-        int mid = idx[rootVal];
-        int leftSize = mid - inLo;
-        TreeNode* node = new TreeNode(rootVal);
-        node->left = buildTreeFrom(in, post, inLo, mid - 1, postLo, postLo + leftSize - 1);
-        node->right = buildTreeFrom(in, post, mid + 1, inHi, postLo + leftSize, postHi - 1);
-        return node; // placeholder - fix below
-    }
-public:
-    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        idx.clear();
-        for (int i = 0; i < (int)inorder.size(); ++i) idx[inorder[i]] = i;
-        return buildHelper(inorder, postorder, 0, (int)inorder.size() - 1, 0, (int)postorder.size() - 1);
-    }
-private:
-    TreeNode* buildHelper(vector<int>& in, vector<int>& post, int inLo, int inHi, int postLo, int postHi) {
+
+    TreeNode* build(vector<int>& in, vector<int>& post, int inLo, int inHi, int postLo, int postHi) {
         if (inLo > inHi) return nullptr;
         int rootVal = post[postHi];
         int mid = idx[rootVal];
         int leftSize = mid - inLo;
         TreeNode* node = new TreeNode(rootVal);
-        node->left = buildHelper(in, post, inLo, mid - 1, postLo, postLo + leftSize - 1);
-        node->right = buildHelper(in, post, mid + 1, inHi, postLo + leftSize, postHi - 1);
+        node->left = build(in, post, inLo, mid - 1, postLo, postLo + leftSize - 1);
+        node->right = build(in, post, mid + 1, inHi, postLo + leftSize, postHi - 1);
         return node;
+    }
+
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        idx.clear();
+        for (int i = 0; i < (int)inorder.size(); ++i) idx[inorder[i]] = i;
+        return build(inorder, postorder, 0, (int)inorder.size() - 1, 0, (int)postorder.size() - 1);
     }
 };
 ```

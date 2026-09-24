@@ -37,6 +37,14 @@ Target: **150–200** well-understood LeetCode problems (quality > quantity).
 
 ## Materials in this repo
 
+### LeetCode problem sets (solved + explained, C++)
+
+| List | Index |
+|------|-------|
+| **Blind 75** | [LeetCode/Blind75/README.md](./LeetCode/Blind75/README.md) |
+| **Top Interview 150** | [LeetCode/Top150/README.md](./LeetCode/Top150/README.md) |
+| All solution files | [LeetCode/solutions/](./LeetCode/solutions/) |
+
 ### Data Structures (C++)
 
 | Topic | Docs | Code |

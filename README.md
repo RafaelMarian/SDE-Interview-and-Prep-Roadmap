@@ -8,6 +8,8 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is a collabora
 
 Focused study order, must-know structures (Tree, HashMap, Graph, Heap, Trie, …), algorithm patterns (DP, Binary Search, Backtracking, …), and links to every `.cpp` / `.md` practice file in this repo.
 
+## <span style="color:darkolivegreen;">LeetCode Blind 75 & Top 150 — [solved + explained in C++](./LeetCode/README.md)</span>
+
 ## <span style="color:darkolivegreen;">Printable PDF Version of Checklist - [Click Here](/SDE-Interview-and-Prep-Roadmap.pdf)</span>
 
 ## <span style="color:darkolivegreen;">**Domains and Topics**</span>
