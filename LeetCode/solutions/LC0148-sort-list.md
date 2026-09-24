@@ -1,61 +1,48 @@
 # LC 148. Sort List
 
-**Lists:** Top 150
-**Topic:** Linked List / Merge Sort
+**Lists:** Top 150  
+**Topic:** Linked List / Merge Sort  
 **Difficulty:** Medium
 
 ## Problem
-Given the head of a linked list, sort the list in O(n log n) time and O(1) constant space (ignoring recursion stack). Example: `4 -> 2 -> 1 -> 3` becomes `1 -> 2 -> 3 -> 4`.
+Sort a linked list in O(n log n) time and O(1) extra space (merge sort is accepted).
 
 ## Intuition
-Merge sort on a linked list: find middle with slow/fast pointers, recursively sort halves, merge two sorted lists.
+Merge sort: split with slow/fast, sort halves, merge.
 
 ## Approach
-1. Base: null or single node.
-2. Split at middle (second half starts at `slow->next` after finding `slow`).
-3. `left = sortList(head)`, `right = sortList(slow->next)`, `slow->next = nullptr`.
-4. Return `merge(left, right)` with standard two-pointer merge.
+1. Base: 0/1 node.  
+2. Find mid, cut list.  
+3. Recurse both halves; merge sorted lists.
 
 ## Complexity
 - Time: O(n log n)
-- Space: O(log n) recursion depth
+- Space: O(log n) recursion
 
 ## C++ Solution
 ```cpp
 class Solution {
     ListNode* merge(ListNode* a, ListNode* b) {
-        ListNode dummy(0);
-        ListNode* tail = &dummy;
+        ListNode dummy(0), *t = &dummy;
         while (a && b) {
-            if (a->val <= b->val) {
-                tail->next = a;
-                a = a->next;
-            } else {
-                tail->next = b;
-                b = b->next;
-            }
-            tail = tail->next;
+            if (a->val < b->val) { t->next = a; a = a->next; }
+            else { t->next = b; b = b->next; }
+            t = t->next;
         }
-        tail->next = a ? a : b;
+        t->next = a ? a : b;
         return dummy.next;
     }
-
 public:
     ListNode* sortList(ListNode* head) {
-        if (!head || !head->next) {
-            return head;
-        }
-        ListNode* slow = head;
-        ListNode* fast = head->next;
+        if (!head || !head->next) return head;
+        ListNode *slow = head, *fast = head->next;
         while (fast && fast->next) {
             slow = slow->next;
             fast = fast->next->next;
         }
         ListNode* mid = slow->next;
         slow->next = nullptr;
-        ListNode* left = sortList(head);
-        ListNode* right = sortList(mid);
-        return merge(left, right);
+        return merge(sortList(head), sortList(mid));
     }
 };
 ```

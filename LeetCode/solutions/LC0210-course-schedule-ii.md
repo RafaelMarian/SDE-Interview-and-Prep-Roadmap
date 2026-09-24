@@ -1,53 +1,48 @@
 # LC 210. Course Schedule II
+
 **Lists:** Top 150  
-**Topic:** Graph  
+**Topic:** Graph / Topological Sort  
 **Difficulty:** Medium
 
-## Problem (short + example)
-
-Return an ordering of courses to finish all prerequisites, or empty if impossible.
-
-**Example:** `numCourses=4`, `[[1,0],[2,0],[3,1],[3,2]]` → `[0,1,2,3]` or `[0,2,1,3]`.
+## Problem
+Return a valid course order given prerequisites `[a,b]` meaning b → a. Empty if cycle.
 
 ## Intuition
-
-Topological sort: repeatedly take courses with no remaining prerequisites (Kahn’s algorithm).
+Kahn's algorithm: BFS on zero indegree nodes; shrink indegrees.
 
 ## Approach
-
-1. Build graph and indegree array.
-2. Queue nodes with indegree 0; pop, append to order, decrease neighbors’ indegree.
-3. If order size < `numCourses`, return `{}`; else return order.
+1. Build adj + indegree.  
+2. Queue all indegree 0.  
+3. Pop, append to order, reduce neighbors.  
+4. If order size != n, cycle → `{}`.
 
 ## Complexity
-
-- **Time:** O(V + E)  
-- **Space:** O(V + E)
+- Time: O(V + E)
+- Space: O(V + E)
 
 ## C++ Solution
-
 ```cpp
 class Solution {
 public:
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
         vector<vector<int>> adj(numCourses);
         vector<int> indeg(numCourses);
-        for (auto& p : prerequisites) {
-            adj[p[1]].push_back(p[0]);
-            ++indeg[p[0]];
+        for (auto& e : prerequisites) {
+            adj[e[1]].push_back(e[0]);
+            indeg[e[0]]++;
         }
         queue<int> q;
-        for (int i = 0; i < numCourses; ++i)
+        for (int i = 0; i < numCourses; i++)
             if (indeg[i] == 0) q.push(i);
         vector<int> order;
         while (!q.empty()) {
-            int u = q.front();
-            q.pop();
+            int u = q.front(); q.pop();
             order.push_back(u);
             for (int v : adj[u])
                 if (--indeg[v] == 0) q.push(v);
         }
-        return (int)order.size() == numCourses ? order : vector<int>{};
+        if ((int)order.size() != numCourses) return {};
+        return order;
     }
 };
 ```

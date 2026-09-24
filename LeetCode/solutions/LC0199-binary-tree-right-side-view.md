@@ -1,43 +1,40 @@
 # LC 199. Binary Tree Right Side View
+
 **Lists:** Top 150  
-**Topic:** Binary Tree  
+**Topic:** Binary Tree BFS  
 **Difficulty:** Medium
 
-## Problem (short + example)
-
-Return values of nodes you would see from the right side (top to bottom).
-
-**Example:** `[1,2,3,null,5,null,4]` → `[1,3,4]`.
+## Problem
+Return the values of nodes visible from the right side (rightmost node per level).
 
 ## Intuition
-
-Rightmost node at each depth wins; DFS visiting right before left records the first node at each depth.
+BFS level order; last node of each level is the right-side view.
 
 ## Approach
-
-1. DFS with depth `d`; if `d == ans.size()`, push `node->val`.
-2. Visit right child then left.
-3. Return `ans`.
+Queue BFS; for each level, record the last popped node's value.
 
 ## Complexity
-
-- **Time:** O(n)  
-- **Space:** O(h)
+- Time: O(n)
+- Space: O(n)
 
 ## C++ Solution
-
 ```cpp
 class Solution {
-    vector<int> ans;
-    void dfs(TreeNode* node, int d) {
-        if (!node) return;
-        if (d == (int)ans.size()) ans.push_back(node->val);
-        dfs(node->right, d + 1);
-        dfs(node->left, d + 1);
-    }
 public:
     vector<int> rightSideView(TreeNode* root) {
-        dfs(root, 0);
+        vector<int> ans;
+        if (!root) return ans;
+        queue<TreeNode*> q;
+        q.push(root);
+        while (!q.empty()) {
+            int sz = q.size();
+            for (int i = 0; i < sz; i++) {
+                TreeNode* node = q.front(); q.pop();
+                if (i == sz - 1) ans.push_back(node->val);
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
+            }
+        }
         return ans;
     }
 };

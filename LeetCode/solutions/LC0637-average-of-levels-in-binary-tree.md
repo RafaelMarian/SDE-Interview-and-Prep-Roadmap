@@ -1,52 +1,42 @@
 # LC 637. Average of Levels in Binary Tree
+
 **Lists:** Top 150  
-**Topic:** Binary Tree  
+**Topic:** Binary Tree BFS  
 **Difficulty:** Easy
 
-## Problem (short + example)
-
-Return the average value of nodes at each depth level.
-
-**Example:** `[3,9,20,null,null,15,7]` → `[3.0, 14.5, 11.0]`.
+## Problem
+Return the average value of nodes on each level.
 
 ## Intuition
-
-BFS processes one level at a time; sum values and divide by count.
+BFS level order; sum / count per level.
 
 ## Approach
-
-1. Queue with root; while queue not empty, process `size` nodes at current level.
-2. Accumulate sum and count; push average to result.
-3. Enqueue children.
+Queue BFS; for each level compute average as double.
 
 ## Complexity
-
-- **Time:** O(n)  
-- **Space:** O(w)
+- Time: O(n)
+- Space: O(n)
 
 ## C++ Solution
-
 ```cpp
 class Solution {
 public:
     vector<double> averageOfLevels(TreeNode* root) {
-        vector<double> res;
-        if (!root) return res;
+        vector<double> ans;
         queue<TreeNode*> q;
         q.push(root);
         while (!q.empty()) {
-            int sz = (int)q.size();
-            long long sum = 0;
-            for (int i = 0; i < sz; ++i) {
-                TreeNode* node = q.front();
-                q.pop();
+            int sz = q.size();
+            double sum = 0;
+            for (int i = 0; i < sz; i++) {
+                TreeNode* node = q.front(); q.pop();
                 sum += node->val;
                 if (node->left) q.push(node->left);
                 if (node->right) q.push(node->right);
             }
-            res.push_back((double)sum / sz);
+            ans.push_back(sum / sz);
         }
-        return res;
+        return ans;
     }
 };
 ```

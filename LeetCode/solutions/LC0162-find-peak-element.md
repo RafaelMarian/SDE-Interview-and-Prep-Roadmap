@@ -1,20 +1,17 @@
 # LC 162. Find Peak Element
 
-**Lists:** Top 150
-**Topic:** Binary Search
+**Lists:** Top 150  
+**Topic:** Binary Search  
 **Difficulty:** Medium
 
 ## Problem
-A peak element is strictly greater than its neighbors. Given a 0-indexed integer array `nums`, find a peak element and return its index. If multiple peaks, return any. Assume `nums[-1] = nums[n] = -∞`. Must be O(log n). Example: `nums = [1,2,3,1]` → `2` (peak value 3).
+Find any peak index (`nums[i] > neighbors`). `nums[-1]` and `nums[n]` are −∞. O(log n).
 
 ## Intuition
-If `nums[mid] < nums[mid+1]`, a peak exists to the right (ascending slope). Otherwise a peak is at `mid` or to the left.
+If `nums[mid] < nums[mid+1]`, a peak exists on the right; else on the left (including mid).
 
 ## Approach
-1. Binary search with `lo = 0`, `hi = n - 1`.
-2. While `lo < hi`, compare `nums[mid]` and `nums[mid + 1]`.
-3. If ascending at `mid`, set `lo = mid + 1`; else `hi = mid`.
-4. Return `lo`.
+Binary search until `lo == hi`; that index is a peak.
 
 ## Complexity
 - Time: O(log n)
@@ -25,15 +22,11 @@ If `nums[mid] < nums[mid+1]`, a peak exists to the right (ascending slope). Othe
 class Solution {
 public:
     int findPeakElement(vector<int>& nums) {
-        int lo = 0;
-        int hi = static_cast<int>(nums.size()) - 1;
+        int lo = 0, hi = (int)nums.size() - 1;
         while (lo < hi) {
             int mid = lo + (hi - lo) / 2;
-            if (nums[mid] < nums[mid + 1]) {
-                lo = mid + 1;
-            } else {
-                hi = mid;
-            }
+            if (nums[mid] < nums[mid + 1]) lo = mid + 1;
+            else hi = mid;
         }
         return lo;
     }

@@ -1,24 +1,23 @@
 # LC 433. Minimum Genetic Mutation
 
-**Lists:** Top 150
-**Topic:** Graphs (BFS)
+**Lists:** Top 150  
+**Topic:** Graph BFS  
 **Difficulty:** Medium
 
 ## Problem
-A gene string has eight characters from `'A','C','G','T'`. One mutation changes one character. Given `startGene`, `endGene`, and `bank` of valid genes, return the minimum number of mutations to reach `endGene`, or `-1` if impossible. Each step must use a word in `bank`. Example: `start = "AACCGGTT", end = "AACCGGTA", bank = ["AACCGGTA"]` → `1`.
+From `startGene` to `endGene` mutating one char at a time among `ACGT`, only through `bank`. Return min mutations or −1.
 
 ## Intuition
-Same as word ladder: genes are nodes; edges connect strings differing by one character and present in the bank. Shortest path is BFS.
+Word Ladder variant: BFS where each gene is a node; edges = one-char difference in bank.
 
 ## Approach
-1. Put `bank` in a hash set; if `endGene` not in set, return `-1`.
-2. BFS queue with `(gene, steps)` from `startGene`.
-3. For each gene, try all 4 letters at each of 8 positions; if neighbor in set, enqueue with `steps + 1` and remove from set.
-4. Return steps when `endGene` is reached.
+1. Put bank in a set.  
+2. BFS from start; for each gene try all one-char mutations.  
+3. First time reaching end → steps.
 
 ## Complexity
-- Time: O(8 · 4 · n · L) with n bank size, L = 8
-- Space: O(n)
+- Time: O(B · L · 4 · L) roughly
+- Space: O(B)
 
 ## C++ Solution
 ```cpp
@@ -26,36 +25,30 @@ class Solution {
 public:
     int minMutation(string startGene, string endGene, vector<string>& bank) {
         unordered_set<string> dict(bank.begin(), bank.end());
-        if (!dict.count(endGene)) {
-            return -1;
-        }
-        queue<pair<string, int>> q;
-        q.push({startGene, 0});
-        dict.erase(startGene);
-        const string letters = "ACGT";
+        if (!dict.count(endGene)) return -1;
+        queue<string> q;
+        unordered_set<string> seen{{startGene}};
+        q.push(startGene);
+        int steps = 0;
+        string genes = "ACGT";
         while (!q.empty()) {
-            auto [gene, steps] = q.front();
-            q.pop();
-            if (gene == endGene) {
-                return steps;
-            }
-            for (int i = 0; i < 8; ++i) {
-                char orig = gene[i];
-                for (char c : letters) {
-                    if (c == orig) {
-                        continue;
-                    }
-                    gene[i] = c;
-                    if (dict.count(gene)) {
-                        if (gene == endGene) {
-                            return steps + 1;
+            int sz = q.size();
+            while (sz--) {
+                string cur = q.front(); q.pop();
+                if (cur == endGene) return steps;
+                for (int i = 0; i < (int)cur.size(); i++) {
+                    char old = cur[i];
+                    for (char g : genes) {
+                        cur[i] = g;
+                        if (dict.count(cur) && !seen.count(cur)) {
+                            seen.insert(cur);
+                            q.push(cur);
                         }
-                        dict.erase(gene);
-                        q.push({gene, steps + 1});
                     }
+                    cur[i] = old;
                 }
-                gene[i] = orig;
             }
+            steps++;
         }
         return -1;
     }
