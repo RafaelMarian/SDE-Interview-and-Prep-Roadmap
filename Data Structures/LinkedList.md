@@ -1,5 +1,7 @@
 # Linked List
 
+> **C++ practice file:** [`LinkedList.cpp`](./LinkedList.cpp) — node creation, traversal, insert (front / after / end), search, and length.
+
 ## Table of Contents
 
 1. [Linked List Overview](#linked-list-overview)

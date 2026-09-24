@@ -52,3 +52,45 @@ The two pointer technique is a fundamental algorithmic strategy that uses two po
 - **Simplicity**: The technique is straightforward and easy to implement.
 - **Efficiency**: It often improves the time complexity of the solution.
 - **Versatility**: Applicable to a wide range of problems, especially those involving sorted arrays or partitioning tasks.
+
+#### C++ examples
+
+See [`Two-Pointer-Algo.cpp`](./Two-Pointer-Algo.cpp) for full runnable solutions. Core patterns:
+
+```cpp
+// Opposite ends — palindrome check
+bool palindrome(const std::string& s) {
+    int left = 0, right = (int)s.size() - 1;
+    while (left < right) {
+        if (s[left] != s[right]) return false;
+        left++; right--;
+    }
+    return true;
+}
+
+// Opposite ends — two sum on a sorted array
+std::vector<int> twoSum(const std::vector<int>& nums, int target) {
+    int left = 0, right = (int)nums.size() - 1;
+    while (left < right) {
+        int sum = nums[left] + nums[right];
+        if (sum == target) return {left, right};
+        if (sum > target) right--;
+        else left++;
+    }
+    return {-1, -1};
+}
+
+// Same direction — merge two sorted arrays
+std::vector<int> mergedSorted(const std::vector<int>& a,
+                              const std::vector<int>& b) {
+    size_t i = 0, j = 0;
+    std::vector<int> out;
+    while (i < a.size() && j < b.size()) {
+        if (a[i] < b[j]) out.push_back(a[i++]);
+        else out.push_back(b[j++]);
+    }
+    while (i < a.size()) out.push_back(a[i++]);
+    while (j < b.size()) out.push_back(b[j++]);
+    return out;
+}
+```

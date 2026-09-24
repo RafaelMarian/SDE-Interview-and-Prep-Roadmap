@@ -1,8 +1,14 @@
-# <span style="color:darkslategray;">SDE Interview and Prep Roadmap</span>
+# <span style="color:darkslategray;">SDE Interview and Prep Roadmap (C++)</span>
 
 ## <span style="color:darkolivegreen;">Overview</span>
 
-Welcome to the SDE Interview Preparation Roadmap! This repository is not just about my personal journey; it's a collaborative space for collective learning. As I prepare for Software Development Engineer (SDE) interviews, I've created a comprehensive checklist to guide my preparation. By sharing this roadmap, I aim to foster a community of learners where we can all grow together. It covers various domains including **Data Structures, Algorithms, System Design, Operating Systems, Networking, Databases, Programming Languages and Concepts, System Architecture, Problem-solving and Coding, as well as Behavioral and Soft Skills**.
+Welcome to the SDE Interview Preparation Roadmap! This repository is a collaborative checklist for Software Development Engineer (SDE) interview prep, with **code examples and walkthroughs in C++**. It covers **Data Structures, Algorithms, System Design, Operating Systems, Networking, Databases, Programming Languages and Concepts, System Architecture, Problem-solving and Coding, as well as Behavioral and Soft Skills**.
+
+## <span style="color:darkolivegreen;">Start here for FAANG — [FAANG Interview Guide (C++)](./FAANG-Interview-Guide.md)</span>
+
+Focused study order, must-know structures (Tree, HashMap, Graph, Heap, Trie, …), algorithm patterns (DP, Binary Search, Backtracking, …), and links to every `.cpp` / `.md` practice file in this repo.
+
+## <span style="color:darkolivegreen;">LeetCode Blind 75 & Top 150 — [solved + explained in C++](./LeetCode/README.md)</span>
 
 ## <span style="color:darkolivegreen;">Printable PDF Version of Checklist - [Click Here](/SDE-Interview-and-Prep-Roadmap.pdf)</span>
 
@@ -12,7 +18,7 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
 <summary>1. <span style="color:green;">Data Structures</span></summary>
 
    - [ ] [**Arrays**](./Data%20Structures/Arrays.md)
-   - [ ] [**Linked Lists**](./Data%20Structures/LinkedList.md)
+   - [ ] [**Linked Lists**](./Data%20Structures/LinkedList.md) · [LinkedList.cpp](./Data%20Structures/LinkedList.cpp)
      - [ ] Singly linked lists
        - [ ] Circularly linked lists
        - [ ] Lock-free linked lists
@@ -21,18 +27,18 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
      - [ ] Circular linked lists
      - [ ] Skip lists
      - [ ] Unrolled linked lists
-   - [ ] **Stacks**
+   - [ ] [**Stacks**](./Data%20Structures/Stack.md) · [Stack.cpp](./Data%20Structures/Stack.cpp)
      - [ ] Implementations using arrays and linked lists
        - [ ] Array-based stack
        - [ ] Linked list-based stack
      - [ ] Applications (e.g., expression evaluation, backtracking)
      - [ ] Priority stacks
-   - [ ] **Queues**
+   - [ ] [**Queues**](./Data%20Structures/Queue.md) · [Queue.cpp](./Data%20Structures/Queue.cpp)
      - [ ] Implementations (e.g., array-based, linked list-based, priority queues)
        - [ ] Circular queue
        - [ ] Double-ended queue (Deque)
      - [ ] Applications (e.g., BFS, job scheduling)
-   - [ ] **Trees**
+   - [ ] [**Trees**](./Data%20Structures/BinaryTree.md) · [BinaryTree.cpp](./Data%20Structures/BinaryTree.cpp)
      - [ ] Binary Trees
        - [ ] Full binary tree
        - [ ] Complete binary tree
@@ -45,10 +51,10 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
      - [ ] Red-Black Trees
      - [ ] Splay Trees
      - [ ] B-Trees
-     - [ ] Heap Trees (min-heap, max-heap)
-     - [ ] Trie
+     - [ ] [Heap Trees (min-heap, max-heap)](./Data%20Structures/Heap.md) · [Heap.cpp](./Data%20Structures/Heap.cpp)
+     - [ ] [Trie](./Data%20Structures/Trie.md) · [Trie.cpp](./Data%20Structures/Trie.cpp)
      - [ ] Radix Trees
-   - [ ] **Graphs**
+   - [ ] [**Graphs**](./Data%20Structures/Graph.md) · [Graph.cpp](./Data%20Structures/Graph.cpp)
      - [ ] Representations (adjacency matrix, adjacency list)
        - [ ] Edge list
        - [ ] Incidence matrix
@@ -59,7 +65,8 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
      - [ ] Bipartite graphs
      - [ ] Spanning trees (Minimum Spanning Tree, Maximum Spanning Tree)
      - [ ] Graphs with special properties (e.g., planar graphs, Eulerian graphs)
-   - [ ] **Hash Tables**
+     - [ ] [Union-Find / DSU](./Data%20Structures/UnionFind.md) · [UnionFind.cpp](./Data%20Structures/UnionFind.cpp)
+   - [ ] [**Hash Tables**](./Data%20Structures/HashMap.md) · [HashMap.cpp](./Data%20Structures/HashMap.cpp)
      - [ ] Collision resolution techniques (chaining, open addressing)
      - [ ] Hash functions
      - [ ] Perfect Hashing
@@ -73,7 +80,16 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
 <details>
 <summary>2. <span style="color:green;">Algorithms</span></summary>
 
-   - [ ] **Sorting Algorithms**:
+   - FAANG pattern guides:
+     - [Two Pointers](./Algorithms/Two-Pointer-Algo.md) · [cpp](./Algorithms/Two-Pointer-Algo.cpp)
+     - [Sliding Window](./Algorithms/Sliding-Window-Algo.md)
+     - [Binary Search](./Algorithms/BinarySearch.md) · [cpp](./Algorithms/BinarySearch.cpp)
+     - [Sorting](./Algorithms/Sorting.md) · [cpp](./Algorithms/Sorting.cpp)
+     - [Recursion / Backtracking](./Algorithms/Recursion-Backtracking.md) · [cpp](./Algorithms/Recursion-Backtracking.cpp)
+     - [Dynamic Programming](./Algorithms/DynamicProgramming.md) · [cpp](./Algorithms/DynamicProgramming.cpp)
+     - [Greedy](./Algorithms/Greedy.md) · [cpp](./Algorithms/Greedy.cpp)
+     - [Bit Manipulation](./Algorithms/BitManipulation.md) · [cpp](./Algorithms/BitManipulation.cpp)
+   - [ ] [**Sorting Algorithms**](./Algorithms/Sorting.md):
      - [ ] Bubble Sort
      - [ ] Selection Sort
      - [ ] Insertion Sort
@@ -92,7 +108,7 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
      - [ ] Bitonic Sort
      - [ ] Gnome Sort
      - [ ] Strand Sort
-   - [ ] **Searching Algorithms**:
+   - [ ] [**Searching Algorithms**](./Algorithms/BinarySearch.md):
      - [ ] Linear Search
      - [ ] Binary Search
      - [ ] Depth-First Search (DFS)
@@ -103,7 +119,7 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
      - [ ] Fibonacci Search
      - [ ] Ternary Search
      - [ ] Hashing (Hash Table)
-   - [ ] **Dynamic Programming**
+   - [ ] [**Dynamic Programming**](./Algorithms/DynamicProgramming.md)
      - [ ] Memoization
      - [ ] Tabulation
      - [ ] Longest Common Subsequence (LCS)
@@ -116,7 +132,7 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
      - [ ] Rod Cutting Problem
      - [ ] Fibonacci Series
      - [ ] Shortest Path Problems (e.g., Dijkstra's Algorithm using DP)
-   - [ ] **Greedy Algorithms**
+   - [ ] [**Greedy Algorithms**](./Algorithms/Greedy.md)
      - [ ] Fractional Knapsack Problem
      - [ ] Activity Selection Problem
      - [ ] Huffman Coding
@@ -136,6 +152,8 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
      - [ ] Cooley–Tukey Fast Fourier Transform (FFT)
      - [ ] Finding Maximum Subarray Sum (Kadane's Algorithm)
      - [ ] Finding Peak Element in 1D/2D Array
+   - [ ] [**Backtracking**](./Algorithms/Recursion-Backtracking.md) · [cpp](./Algorithms/Recursion-Backtracking.cpp)
+   - [ ] [**Bit Manipulation**](./Algorithms/BitManipulation.md) · [cpp](./Algorithms/BitManipulation.cpp)
    - [ ] **String Algorithms**:
      - [ ] Rabin-Karp Algorithm
      - [ ] Knuth-Morris-Pratt (KMP) Algorithm
@@ -371,8 +389,19 @@ Welcome to the SDE Interview Preparation Roadmap! This repository is not just ab
 </details>
 
 <details>
-<summary>7. <span style="color:green;">Programming Languages and Concepts</span></summary>
+<summary>7. <span style="color:green;">Programming Languages and Concepts (C++ focus)</span></summary>
 
+   - [ ] **C++ language essentials**
+     - [ ] Types, references, pointers, and references vs pointers
+     - [ ] RAII and deterministic destruction
+     - [ ] `std::vector`, `std::string`, `std::array`, `std::deque`
+     - [ ] Associative containers: `std::map`, `std::unordered_map`, `std::set`
+     - [ ] Iterators and range-based for
+     - [ ] Lambdas and `<algorithm>` / `<numeric>`
+     - [ ] Move semantics and copy vs move
+     - [ ] Smart pointers (`unique_ptr`, `shared_ptr`)
+     - [ ] Templates and basic generic programming
+     - [ ] Const-correctness and `constexpr`
    - [ ] **Programming paradigms**
      - [ ] Imperative programming
      - [ ] Declarative programming
