@@ -1,54 +1,42 @@
-# 23. Merge k Sorted Lists
-
-**Lists:** Top Interview 150  
+# LC 23. Merge k Sorted Lists
+**Lists:** Top 150  
 **Topic:** Heap  
-**Difficulty:** Hard  
+**Difficulty:** Hard
 
-## Problem
+## Problem (short + example)
 
-You are given an array of `k` linked lists, each sorted in ascending order. Merge all lists into one sorted linked list and return it.
+Merge `k` sorted linked lists into one sorted list.
+
+**Example:** `[1→4→5], [1→3→4], [2→6]` → `1 → 1 → 2 → 3 → 4 → 4 → 5 → 6`.
 
 ## Intuition
 
-The smallest next node among all list heads is the next global minimum. Keep those heads in a min-heap keyed by node value.
+Always pick the smallest current head among lists — a min-heap of size k does this efficiently.
 
 ## Approach
 
-1. Push the head of each non-null list into a min-heap (compare by `ListNode*` value).
-2. Pop the smallest node, append to a dummy tail, push its `next` if non-null.
-3. Continue until the heap is empty.
+1. Push head of each non-empty list on min-heap (compare by node value).
+2. Pop smallest, attach to result tail, push its `next` if any.
+3. Return dummy.next.
 
 ## Complexity
 
-- **Time:** O(N log k) where N is total nodes, k is number of lists
-- **Space:** O(k) for the heap
+- **Time:** O(N log k) where N is total nodes  
+- **Space:** O(k)
 
 ## C++ Solution
 
 ```cpp
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
     struct Cmp {
-        bool operator()(ListNode* a, ListNode* b) const {
-            return a->val > b->val;
-        }
+        bool operator()(ListNode* a, ListNode* b) const { return a->val > b->val; }
     };
 
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         priority_queue<ListNode*, vector<ListNode*>, Cmp> pq;
-        for (ListNode* head : lists)
-            if (head) pq.push(head);
-
+        for (ListNode* h : lists)
+            if (h) pq.push(h);
         ListNode dummy(0);
         ListNode* tail = &dummy;
         while (!pq.empty()) {
@@ -58,7 +46,6 @@ public:
             tail = tail->next;
             if (node->next) pq.push(node->next);
         }
-        tail->next = nullptr;
         return dummy.next;
     }
 };
